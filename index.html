@@ -3,35 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lebron Loves Us</title>
+    <title>LeBron Loves Us - Photo Gallery</title>
     <style>
+        :root {
+            --primary-color: #552583; /* Lakers purple */
+            --secondary-color: #FDB927; /* Lakers gold */
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+        }
+        
         body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-color);
         }
-        img {
-            max-width: 100%;
-            height: auto;
-            border: 2px solid #333;
-            border-radius: 8px;
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
         }
-        figcaption {
-            margin-top: 10px;
-            font-size: 1.2em;
-            color: #555;
+        
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .gallery-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            aspect-ratio: 1/1;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(85, 37, 131, 0.8);
+            color: white;
+            padding: 15px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+        
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+        
+        .carousel-container {
+            max-width: 800px;
+            margin: 40px auto;
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .carousel-img {
+            width: 100%;
+            display: block;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+        }
+        
+        .carousel-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(85, 37, 131, 0.8);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+        
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+        
+        .carousel-btn {
+            background: rgba(253, 185, 39, 0.7);
+            color: white;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: background 0.3s;
+        }
+        
+        .carousel-btn:hover {
+            background: rgba(253, 185, 39, 0.9);
+        }
+        
+        footer {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <figure>
-        <img src="1000000478.jpg" alt="Lebron">
-        <figcaption>Lebron loves us</figcaption>
-    </figure>
+    <header>
+        <h1>LeBron Loves Us</h1>
+        <p>A collection of memorable moments</p>
+    </header>
+    
+    <div class="carousel-container">
+        <img id="carousel-image" class="carousel-img" src="photos/1000000478.jpg" alt="LeBron James">
+        <div class="carousel-caption">LeBron James - The King</div>
+        <div class="carousel-nav">
+            <button class="carousel-btn" onclick="prevImage()">❮</button>
+            <button class="carousel-btn" onclick="nextImage()">❯</button>
+        </div>
+    </div>
+    
+    <div class="gallery-container">
+        <h2 style="text-align: center; margin-bottom: 30px;">Gallery</h2>
+        <div class="gallery" id="photo-gallery">
+            <!-- Gallery items will be added by JavaScript -->
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2023 LeBron Loves Us | All Rights Reserved</p>
+    </footer>
+    
+    <script>
+        const images = [
+            "photos/1000000478.jpg",
+            "photos/1000000479.jpg",
+            "photos/1000000480.jpg",
+            "photos/1000000481.jpg",
+            "photos/1000000482.jpg",
+            "photos/1000000483.jpg",
+            "photos/1000000484.jpg",
+            "photos/1000000486.jpg",
+            "photos/1000000487.jpg",
+            "photos/1000000489.jpg",
+            "photos/1000000490.jpg",
+            "photos/1000000491.jpg",
+            "photos/1000000492.jpg",
+            "photos/1000000493.jpg",
+            "photos/1000000494.jpg",
+            "photos/1000000495.jpg",
+            "photos/1000000496.jpg",
+            "photos/1000000498.jpg",
+            "photos/1000000500.jpg",
+            "photos/1000000503.jpg",
+            "photos/1000000505.jpg"
+        ];
+        
+        let currentIndex = 0;
+        const carouselImage = document.getElementById("carousel-image");
+        const galleryContainer = document.getElementById("photo-gallery");
+        
+        // Initialize gallery
+        function initGallery() {
+            images.forEach((img, index) => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.innerHTML = `
+                    <img src="${img}" alt="LeBron James ${index + 1}" class="gallery-img">
+                    <div class="gallery-caption">LeBron Moment #${index + 1}</div>
+                `;
+                galleryItem.addEventListener('click', () => {
+                    currentIndex = index;
+                    updateCarousel();
+                });
+                galleryContainer.appendChild(galleryItem);
+            });
+        }
+        
+        // Update carousel display
+        function updateCarousel() {
+            carouselImage.src = images[currentIndex];
+        }
+        
+        // Navigation functions
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % images.length;
+            updateCarousel();
+        }
+        
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            updateCarousel();
+        }
+        
+        // Auto-advance carousel
+        setInterval(nextImage, 5000);
+        
+        // Initialize the page
+        window.onload = function() {
+            initGallery();
+            updateCarousel();
+        };
+    </script>
 </body>
 </html>
